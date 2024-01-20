@@ -16,3 +16,37 @@ export const getCurrencies = async (): Promise<ICurrency[]> => {
     throw error;
   }
 };
+
+export const createOrder = async ({
+  expectedOutputAmount,
+  inputCurrency,
+  notes,
+}: {
+  expectedOutputAmount: number;
+  inputCurrency: string;
+  notes?: string;
+}): Promise<any> => {
+  try {
+    const response = await fetch("/api/create", {
+      method: "POST",
+      body: JSON.stringify({
+        expected_output_amount: expectedOutputAmount,
+        input_currency: inputCurrency,
+        notes,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to create order - status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};

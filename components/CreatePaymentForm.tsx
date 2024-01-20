@@ -11,12 +11,18 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { ICurrency } from "@/types";
 import CurrencyVisualizer from "./CurrencyVisualizer";
 import { cn } from "@/lib/utils";
+import { createOrder } from "@/lib/api";
+import { useState } from "react";
+import Spinner from "./loading/Spinner";
 
 export interface ICreatePaymentForm {
   currencies: ICurrency[];
 }
 
 export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const formSchema = z
     .object({
       amountPayable: z.coerce.number().min(0, "Amount must be a positive number"),
@@ -58,7 +64,22 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    /* todo */
+    try {
+      setIsLoading(true);
+      setError(null);
+      const payload = {
+        expectedOutputAmount: values.amountPayable,
+        inputCurrency: values.currency,
+        notes: values.paymentDescription,
+      };
+      const response = await createOrder(payload);
+      console.log("Order created:", response, response.identifier);
+    } catch (error) {
+      console.error("Error creating order:", error);
+      setError("An error occurred while creating order.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -139,7 +160,9 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full">
+        {error && <p className="text-destructive">{error}</p>}
+        <Button type="submit" className="w-full" disabled={isLoading}>
+          {isLoading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
           Continuar
         </Button>
       </form>
