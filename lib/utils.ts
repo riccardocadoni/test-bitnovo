@@ -5,6 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export async function handleCopyClick(text: string) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (error) {
+    console.error("Failed to copy text: ", error);
+  }
+}
+
 /**
  * Formats a date string into a human-readable format.
  *

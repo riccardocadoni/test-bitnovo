@@ -6,20 +6,23 @@ import Copy from "./icons/Copy";
 import Warning2 from "./icons/Warning2";
 import { IOrder } from "@/types";
 import useCountdownTimer from "@/hooks/useCountdownTimer";
+import { Button } from "./ui/button";
+import { handleCopyClick } from "@/lib/utils";
+import TimerVisulizer from "./TimerVisulizer";
 
 export interface IMakePayment {
   orderInfo: IOrder;
 }
 
 export default function MakePayment({ orderInfo }: IMakePayment) {
-  const timeLeft = useCountdownTimer(orderInfo.expired_time);
+  console.log(orderInfo);
+
   return (
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Realiza el pago</Label>
       <Card className="flex flex-col items-center gap-8">
-        <CardHeader className="flex flex-row gap-1 items-center">
-          <Timer className="h-6 w-6" />
-          <p className="text-xs mt-0">{timeLeft}</p>
+        <CardHeader>
+          <TimerVisulizer expirationDate={orderInfo.expired_time} />
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="SmartQR" className="">
@@ -47,15 +50,31 @@ export default function MakePayment({ orderInfo }: IMakePayment) {
           <div className="flex w-full justify-center gap-2 items-center">
             <p className="text-sm font-semibold">Enviar</p>{" "}
             <p className="text-base font-bold">{`${orderInfo.crypto_amount} ${orderInfo.currency_id}`}</p>
-            <Copy className="h-4 w-4" />
+            <Button
+              variant="ghost"
+              className="p-2 h-8"
+              onClick={() => handleCopyClick(orderInfo.crypto_amount.toString())}
+            >
+              <Copy className="h-4 w-4" />
+            </Button>
           </div>
           <div className="flex w-full justify-center gap-2 items-center">
-            <p className="text-sm font-normal">{orderInfo.address}</p> <Copy className="h-4 w-4" />
+            <p className="text-sm font-normal">{orderInfo.address}</p>{" "}
+            <Button variant="ghost" className="p-2 h-8" onClick={() => handleCopyClick(orderInfo.address)}>
+              <Copy className="h-4 w-4" />
+            </Button>
           </div>
+
           <div className="flex w-full justify-center gap-2 items-center">
             <Warning2 className="h-6 w-6" />
-            <p className="text-xs font-semibold">Etiqueta de destino: {orderInfo.tag_memo}</p>{" "}
-            <Copy className="h-4 w-4" />
+            <p className="text-xs font-semibold">Etiqueta de destino: {orderInfo.tag_memo}</p>
+            {orderInfo.tag_memo ? (
+              <Button variant="ghost" className="p-2 h-8" onClick={() => handleCopyClick(orderInfo.tag_memo)}>
+                <Copy className="h-4 w-4" />
+              </Button>
+            ) : (
+              "-"
+            )}
           </div>
         </CardFooter>
       </Card>

@@ -31,7 +31,7 @@ export default function OrderSummary({ orderInfo }: IOrderSummary) {
             </div>
             <div className="flex justify-center items-center">
               <Verify className="h-6 w-6" />
-              <p className="text-base">{`Comercio de pruebas de ${orderInfo.merchant_device}`}</p>
+              <p className="text-base">{`${orderInfo.merchant_device}`}</p> {/* Comercio de pruebas de */}
             </div>
           </div>
           <div className="flex justify-between items-center">
@@ -41,7 +41,7 @@ export default function OrderSummary({ orderInfo }: IOrderSummary) {
           <Separator />
           <div className="flex justify-between items-center">
             <p className="text-base font-bold">Concepto:</p>
-            <p className="text-base">{orderInfo.notes}</p>
+            <p className="text-base">{orderInfo.notes || "-"}</p>
           </div>
         </CardContent>
       </Card>
