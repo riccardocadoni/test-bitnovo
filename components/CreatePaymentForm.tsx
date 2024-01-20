@@ -3,39 +3,59 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ChevronDown } from "lucide-react";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ICurrency } from "@/types";
+import CurrencyVisualizer from "./CurrencyVisualizer";
+import { cn } from "@/lib/utils";
 
 export interface ICreatePaymentForm {
   currencies: ICurrency[];
 }
 
 export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
-  const formSchema = z.object({
-    amountPayable: z.coerce.number().min(0, "Amount must be a positive number"),
-    currency: z.string({
-      required_error: "Please select a currency.",
-    }),
-    paymentDescription: z
-      .string()
-      .min(2, {
-        message: "Description must be at least 2 characters.",
-      })
-      .max(30, {
-        message: "Description must not be longer than 30 characters.",
-      })
-      .optional(),
-  });
+  const formSchema = z
+    .object({
+      amountPayable: z.coerce.number().min(0, "Amount must be a positive number"),
+      currency: z.string({
+        required_error: "Please select a currency.",
+      }),
+      paymentDescription: z
+        .string()
+        .min(2, {
+          message: "Description must be at least 2 characters.",
+        })
+        .max(30, {
+          message: "Description must not be longer than 30 characters.",
+        })
+        .optional(),
+    })
+    .refine(
+      (data) => {
+        const selectedCurrency = currencies.find((currency) => currency.symbol === data.currency);
+        if (selectedCurrency) {
+          const minAmount = Number(selectedCurrency.min_amount);
+          const maxAmount = Number(selectedCurrency.max_amount);
+          return data.amountPayable >= minAmount && data.amountPayable <= maxAmount;
+        }
+        return false;
+      },
+      {
+        message: "Amount must be within the range of the selected currency",
+        path: ["amountPayable"],
+      }
+    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amountPayable: 0,
+      currency: currencies[0]?.symbol,
     },
   });
-
-  console.log(currencies);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     /* todo */
@@ -63,7 +83,45 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
           render={({ field }) => (
             <FormItem className="flex flex-col">
               <FormLabel>Seleccionar moneda</FormLabel>
-              {/* todo */}
+              <FormControl>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn("justify-between border-border py-4", !field.value && "text-muted-foreground")}
+                      >
+                        <CurrencyVisualizer currency={currencies.find((currency) => currency.symbol === field.value)} />
+                        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
+                    <Command>
+                      <CommandInput placeholder="Buscar" />
+                      <CommandEmpty>No currency found.</CommandEmpty>
+                      <CommandGroup>
+                        {currencies.map((currency) => (
+                          <CommandItem
+                            value={currency.name}
+                            key={currency.symbol}
+                            onSelect={() => {
+                              form.setValue("currency", currency.symbol);
+                            }}
+                          >
+                            <CurrencyVisualizer
+                              currency={currency}
+                              isInList
+                              isSelected={field.value === currency.symbol}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
