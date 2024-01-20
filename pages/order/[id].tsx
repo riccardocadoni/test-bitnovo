@@ -11,14 +11,13 @@ export interface IOrderPage {
 }
 
 export default function OrderPage({ orderInfo, error }: IOrderPage) {
-  const router = useRouter();
   if (error) return <div>{error}</div>;
   return (
-    <div className="flex w-full gap-6">
-      <div className="w-1/2">
+    <div className="flex flex-col sm:flex-row w-full gap-6">
+      <div className="sm:w-1/2">
         <OrderSummary orderInfo={orderInfo} />
       </div>
-      <div className="w-1/2">
+      <div className="sm:w-1/2">
         <MakePayment orderInfo={orderInfo} />
       </div>
     </div>
