@@ -1,16 +1,28 @@
+import MakePayment from "@/components/MakePayment";
+import OrderSummary from "@/components/OrderSummary";
 import { getOrderInfo } from "@/lib/api";
+import { IOrder } from "@/types";
 import { GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 
 export interface IOrderPage {
-  orderInfo: any;
+  orderInfo: IOrder;
   error?: string;
 }
 
 export default function OrderPage({ orderInfo, error }: IOrderPage) {
   const router = useRouter();
   if (error) return <div>{error}</div>;
-  return <div>order info: {JSON.stringify(orderInfo)}</div>;
+  return (
+    <div className="flex w-full gap-6">
+      <div className="w-1/2">
+        <OrderSummary orderInfo={orderInfo} />
+      </div>
+      <div className="w-1/2">
+        <MakePayment orderInfo={orderInfo} />
+      </div>
+    </div>
+  );
 }
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {

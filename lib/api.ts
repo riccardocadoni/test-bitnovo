@@ -1,4 +1,4 @@
-import { ICurrency } from "@/types";
+import { ICurrency, IOrder } from "@/types";
 
 export const getCurrencies = async (): Promise<ICurrency[]> => {
   try {
@@ -17,7 +17,7 @@ export const getCurrencies = async (): Promise<ICurrency[]> => {
   }
 };
 
-export const getOrderInfo = async (orderId: string): Promise<any> => {
+export const getOrderInfo = async (orderId: string): Promise<IOrder> => {
   try {
     const res = await fetch(`${process.env.API_BASE_URL}/orders/info/${orderId}`, {
       headers: {
@@ -28,7 +28,7 @@ export const getOrderInfo = async (orderId: string): Promise<any> => {
       throw new Error(`Failed to fetch order info - status: ${res.status}`);
     }
     const orderInfo = await res.json();
-    return orderInfo;
+    return orderInfo[0];
   } catch (error) {
     throw error;
   }
