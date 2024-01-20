@@ -5,10 +5,13 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { ICurrency } from "@/types";
 
-export interface ICreatePaymentForm {}
+export interface ICreatePaymentForm {
+  currencies: ICurrency[];
+}
 
-export default function CreatePaymentForm({}: ICreatePaymentForm) {
+export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
   const formSchema = z.object({
     amountPayable: z.coerce.number().min(0, "Amount must be a positive number"),
     currency: z.string({
@@ -31,6 +34,8 @@ export default function CreatePaymentForm({}: ICreatePaymentForm) {
       amountPayable: 0,
     },
   });
+
+  console.log(currencies);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     /* todo */
