@@ -17,6 +17,23 @@ export const getCurrencies = async (): Promise<ICurrency[]> => {
   }
 };
 
+export const getOrderInfo = async (orderId: string): Promise<any> => {
+  try {
+    const res = await fetch(`${process.env.API_BASE_URL}/orders/info/${orderId}`, {
+      headers: {
+        "X-Device-Id": process.env.X_DEVICE_ID!,
+      },
+    });
+    if (!res.ok) {
+      throw new Error(`Failed to fetch order info - status: ${res.status}`);
+    }
+    const orderInfo = await res.json();
+    return orderInfo;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createOrder = async ({
   expectedOutputAmount,
   inputCurrency,
