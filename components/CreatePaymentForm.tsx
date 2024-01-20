@@ -14,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { createOrder } from "@/lib/api";
 import { useState } from "react";
 import Spinner from "./loading/Spinner";
+import { useRouter } from "next/router";
 
 export interface ICreatePaymentForm {
   currencies: ICurrency[];
@@ -22,6 +23,7 @@ export interface ICreatePaymentForm {
 export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
   const formSchema = z
     .object({
@@ -73,7 +75,8 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
         notes: values.paymentDescription,
       };
       const response = await createOrder(payload);
-      console.log("Order created:", response, response.identifier);
+      // Redirect to the order page
+      router.push(`/order/${response.identifier}`);
     } catch (error) {
       console.error("Error creating order:", error);
       setError("An error occurred while creating order.");

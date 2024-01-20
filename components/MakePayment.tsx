@@ -5,19 +5,21 @@ import Timer from "./icons/Timer";
 import Copy from "./icons/Copy";
 import Warning2 from "./icons/Warning2";
 import { IOrder } from "@/types";
+import useCountdownTimer from "@/hooks/useCountdownTimer";
 
 export interface IMakePayment {
   orderInfo: IOrder;
 }
 
 export default function MakePayment({ orderInfo }: IMakePayment) {
+  const timeLeft = useCountdownTimer(orderInfo.expired_time);
   return (
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Realiza el pago</Label>
       <Card className="flex flex-col items-center gap-8">
         <CardHeader className="flex flex-row gap-1 items-center">
           <Timer className="h-6 w-6" />
-          <p className="text-xs mt-0">05:08</p>
+          <p className="text-xs mt-0">{timeLeft}</p>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="SmartQR" className="">

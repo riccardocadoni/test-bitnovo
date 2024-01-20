@@ -1,5 +1,4 @@
 import { IOrder } from "@/types";
-import SummaryCard from "./SummaryCard";
 import Verify from "./icons/Verify";
 import { Card, CardContent } from "./ui/card";
 import { Label } from "./ui/label";
@@ -11,7 +10,6 @@ export interface IOrderSummary {
 }
 
 export default function OrderSummary({ orderInfo }: IOrderSummary) {
-  console.log("order in summary", orderInfo);
   return (
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Resumen del pedido</Label>
