@@ -59,7 +59,7 @@ export default function MakePayment({ orderInfo }: IMakePayment) {
             </Button>
           </div>
           <div className="flex w-full justify-center gap-2 items-center">
-            <p className="text-sm font-normal">{orderInfo.address}</p>{" "}
+            <p className="break-all text-sm font-normal">{orderInfo.address}</p>
             <Button variant="ghost" className="p-2 h-8" onClick={() => handleCopyClick(orderInfo.address)}>
               <Copy className="h-4 w-4" />
             </Button>
