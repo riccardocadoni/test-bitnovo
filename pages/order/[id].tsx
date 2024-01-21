@@ -1,5 +1,6 @@
 import MakePayment from "@/components/MakePayment";
 import OrderSummary from "@/components/OrderSummary";
+import useNotificationSocket from "@/hooks/useNotificationSocket";
 import { getCurrencies, getOrderInfo } from "@/lib/api";
 import { ICurrency, IOrder } from "@/types";
 import { GetServerSidePropsContext } from "next";
@@ -11,8 +12,11 @@ export interface IOrderPage {
 }
 
 export default function OrderPage({ orderInfo, currencies, error }: IOrderPage) {
+  const socket = useNotificationSocket(`wss://payments.pre-bnvo.com/ws/${orderInfo.identifier}`);
+
   if (error) return <div>{error}</div>;
   const selectedCurrency = currencies.find((currency) => currency.symbol === orderInfo.currency_id);
+
   return (
     <div className="flex flex-col sm:flex-row w-full gap-6">
       <div className="sm:w-1/2">
