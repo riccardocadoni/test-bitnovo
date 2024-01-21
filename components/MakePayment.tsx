@@ -1,26 +1,23 @@
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "./ui/label";
-import Timer from "./icons/Timer";
 import Copy from "./icons/Copy";
 import Warning2 from "./icons/Warning2";
 import { IOrder } from "@/types";
-import useCountdownTimer from "@/hooks/useCountdownTimer";
 import { Button } from "./ui/button";
 import { handleCopyClick } from "@/lib/utils";
 import TimerVisulizer from "./TimerVisulizer";
+import QRCodeVisualizer from "./QRCodeVisualizer";
 
 export interface IMakePayment {
   orderInfo: IOrder;
 }
 
 export default function MakePayment({ orderInfo }: IMakePayment) {
-  console.log(orderInfo);
-
   return (
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Realiza el pago</Label>
-      <Card className="flex flex-col items-center gap-8">
+      <Card className="flex flex-col items-center">
         <CardHeader>
           <TimerVisulizer expirationDate={orderInfo.expired_time} />
         </CardHeader>
@@ -41,9 +38,22 @@ export default function MakePayment({ orderInfo }: IMakePayment) {
               </TabsTrigger>
             </TabsList>
             <TabsContent value="SmartQR">
-              <div className="flex justify-center items-center">QRCODE</div>
+              <div className="flex justify-center items-center">
+                <QRCodeVisualizer
+                  currencyId={orderInfo.currency_id}
+                  address={orderInfo.address}
+                  cryptoAmount={orderInfo.crypto_amount}
+                  tagMemo={orderInfo.tag_memo}
+                />
+              </div>
             </TabsContent>
-            <TabsContent value="Web3"> implement web3 </TabsContent>
+            <TabsContent value="Web3">
+              <Card>
+                <CardContent className="flex text-center justify-center items-center p-4 w-40 h-40">
+                  <p>Connect wallet</p>
+                </CardContent>
+              </Card>{" "}
+            </TabsContent>
           </Tabs>
         </CardContent>
         <CardFooter className="flex flex-col gap-3">

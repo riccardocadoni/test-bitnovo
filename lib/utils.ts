@@ -12,6 +12,37 @@ export async function handleCopyClick(text: string) {
     console.error("Failed to copy text: ", error);
   }
 }
+/**
+ * Generates a URI string for creating a QR code for different types of test cryptocurrencies.
+ *
+ * @param {string} currency - The type of the test cryptocurrency (e.g., 'BTC_TEST', 'ETH_TEST3').
+ * @param {string} address - The cryptocurrency address to which the payment will be sent.
+ * @param {number} amount - The amount of cryptocurrency to be transacted.
+ * @param {string} [tagMemo] - An optional tag or memo required for certain currencies like XRP_TEST.
+ * @returns {string|null} A URI string formatted for QR code generation, or null in case of error.
+ */
+
+export function createCryptoUriForQRcode(currency: string, address: string, amount: number, tagMemo?: string) {
+  switch (currency) {
+    case "BCH_TEST":
+      return `bchtest:${address}?amount=${amount}`;
+    case "BTC_TEST":
+      return `bitcoin:${address}?amount=${amount}&rbf=false`;
+    case "ETH_TEST3":
+      return `ethereum:${address}?amount=${amount}`;
+    case "XRP_TEST":
+      if (!tagMemo) {
+        console.error("tagMemo is required for XRP_TEST currency");
+        return null;
+      }
+      return `ripple:${address}?value=${amount}&dt=${tagMemo}`;
+    case "USDC_TEST3":
+      return `ethereum:${address}?value=${amount}`;
+    default:
+      console.error("No currency found");
+      return null;
+  }
+}
 
 /**
  * Formats a date string into a human-readable format.

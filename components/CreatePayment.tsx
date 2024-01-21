@@ -10,7 +10,7 @@ export default function CreatePayment({ currencies }: ICreatePayment) {
   return (
     <Card className="sm:w-[600px] mt-10">
       <CardHeader className="flex items-center space-y-1">
-        <CardTitle className="text-3xl">Crear pago </CardTitle>
+        <CardTitle className="text-3xl">Crear pago</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-4">
         <CreatePaymentForm currencies={currencies} />
