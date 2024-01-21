@@ -46,7 +46,7 @@ export default function OrderSummary({ orderInfo, currency }: IOrderSummary) {
           <Separator />
           <div className="flex justify-between items-center">
             <p className="text-base font-bold">Concepto:</p>
-            <p className="text-base">{orderInfo.notes || "-"}</p>
+            <p className="text-base">{orderInfo.notes && orderInfo.notes !== "undefined" ? orderInfo.notes : "-"}</p>
           </div>
         </CardContent>
       </Card>
