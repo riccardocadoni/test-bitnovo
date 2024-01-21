@@ -1,15 +1,17 @@
-import { IOrder } from "@/types";
+import { ICurrency, IOrder } from "@/types";
 import Verify from "./icons/Verify";
 import { Card, CardContent } from "./ui/card";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { formatDate } from "@/lib/utils";
+import Image from "next/image";
 
 export interface IOrderSummary {
   orderInfo: IOrder;
+  currency?: ICurrency;
 }
 
-export default function OrderSummary({ orderInfo }: IOrderSummary) {
+export default function OrderSummary({ orderInfo, currency }: IOrderSummary) {
   return (
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Resumen del pedido</Label>
@@ -22,7 +24,10 @@ export default function OrderSummary({ orderInfo }: IOrderSummary) {
           <Separator />
           <div className="flex justify-between items-center">
             <p className="text-base font-bold">Moneda seleccionada:</p>
-            <p className="text-base font-bold">{orderInfo.currency_id}</p>
+            <div className="flex items-center gap-2.5">
+              {currency?.image && <Image src={currency.image} alt="Currency logo" height={20} width={20} />}
+              <p className="text-base font-bold">{orderInfo.currency_id}</p>
+            </div>
           </div>
           <Separator />
           <div className="flex justify-between items-center">
