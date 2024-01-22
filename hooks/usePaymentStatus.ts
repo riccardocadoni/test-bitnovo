@@ -1,8 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-const useNotificationSocket = (url: string) => {
+const usePaymentStatus = (orderId: string, initialStatus: string) => {
+  const [paymentStatus, setPaymentStatus] = useState(initialStatus);
+
+  /* Create a web socket connection to update payment status if necessary */
   useEffect(() => {
-    let socket = new WebSocket(url);
+    let socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT}/${orderId}`);
 
     socket.addEventListener("open", () => {
       console.log("WebSocket connection established");
@@ -12,6 +15,7 @@ const useNotificationSocket = (url: string) => {
       console.log("Message from server", event.data);
       const { status } = JSON.parse(event.data);
       console.log("status: ", status);
+      setPaymentStatus(status);
     });
 
     socket.addEventListener("error", (error) => {
@@ -27,7 +31,11 @@ const useNotificationSocket = (url: string) => {
         socket.close();
       }
     };
-  }, [url]);
+  }, [orderId]);
+
+  return {
+    paymentStatus,
+  };
 };
 
-export default useNotificationSocket;
+export default usePaymentStatus;

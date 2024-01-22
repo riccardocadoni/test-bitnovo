@@ -1,4 +1,5 @@
 import CreatePayment from "@/components/CreatePayment";
+import ErrorVisualizer from "@/components/ErrorVisualizer";
 import { getCurrencies } from "@/lib/api";
 import { ICurrency } from "@/types/index";
 
@@ -8,7 +9,7 @@ export interface IHome {
 }
 
 export default function Home({ currencies, error }: IHome) {
-  if (error) return <div>{error}</div>;
+  if (error) return <ErrorVisualizer errorMessage={error} />;
   return <CreatePayment currencies={currencies} />;
 }
 
