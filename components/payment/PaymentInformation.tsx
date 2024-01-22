@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "../ui/label";
@@ -6,7 +7,6 @@ import Copy from "../icons/Copy";
 import Warning2 from "../icons/Warning2";
 import { IPayment } from "@/types";
 import { Button } from "../ui/button";
-import { handleCopyClick } from "@/lib/utils";
 import QRCodeVisualizer from "../QRCodeVisualizer";
 //disabled SSR for this component to avoid error: Text content does not match server-rendered HTML
 const TimerVisulizer = dynamic(() => import("../TimerVisulizer"), { ssr: false });
@@ -16,6 +16,20 @@ export interface IPaymentInformation {
 }
 
 export default function PaymentInformation({ paymentInfo }: IPaymentInformation) {
+  const { toast } = useToast();
+
+  const handleCopyClick = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      toast({
+        description: "Text copied!",
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error("Failed to copy text: ", error);
+    }
+  };
+
   return (
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Realiza el pago</Label>
