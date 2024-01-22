@@ -77,17 +77,15 @@ export default function PaymentInformation({ paymentInfo }: IPaymentInformation)
             </Button>
           </div>
 
-          <div className="flex w-full justify-center gap-2 items-center">
-            <Warning2 className="h-6 w-6" />
-            <p className="text-xs font-semibold">Etiqueta de destino: {paymentInfo.tag_memo}</p>
-            {paymentInfo.tag_memo ? (
+          {paymentInfo.tag_memo && (
+            <div className="flex w-full justify-center gap-2 items-center">
+              <Warning2 className="h-6 w-6" />
+              <p className="text-xs font-semibold">Etiqueta de destino: {paymentInfo.tag_memo}</p>
               <Button variant="ghost" className="p-2 h-8" onClick={() => handleCopyClick(paymentInfo.tag_memo)}>
                 <Copy className="h-4 w-4" />
               </Button>
-            ) : (
-              "-"
-            )}
-          </div>
+            </div>
+          )}
         </CardFooter>
       </Card>
     </div>
