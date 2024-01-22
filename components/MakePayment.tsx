@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { Card, CardContent, CardFooter, CardHeader } from "./ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "./ui/label";
@@ -6,8 +7,9 @@ import Warning2 from "./icons/Warning2";
 import { IOrder } from "@/types";
 import { Button } from "./ui/button";
 import { handleCopyClick } from "@/lib/utils";
-import TimerVisulizer from "./TimerVisulizer";
 import QRCodeVisualizer from "./QRCodeVisualizer";
+//disabled SSR for this component to avoid error: Text content does not match server-rendered HTML
+const TimerVisulizer = dynamic(() => import("./TimerVisulizer"), { ssr: false });
 
 export interface IMakePayment {
   orderInfo: IOrder;
