@@ -35,9 +35,9 @@ export function createCryptoUriForQRcode(currency: string, address: string, amou
         console.error("tagMemo is required for XRP_TEST currency");
         return null;
       }
-      return `ripple:${address}?value=${amount}&dt=${tagMemo}`;
+      return `ripple:${address}?amount=${amount}&dt=${tagMemo}`;
     case "USDC_TEST3":
-      return `ethereum:${address}?value=${amount}`;
+      return `ethereum:${address}?amount=${amount}`;
     default:
       console.error("No currency found");
       return null;
