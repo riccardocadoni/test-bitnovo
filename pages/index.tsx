@@ -10,7 +10,11 @@ export interface ICreatePaymentPage {
 
 export default function CreatePaymentPage({ currencies, error }: ICreatePaymentPage) {
   if (error) return <ErrorVisualizer errorMessage={error} />;
-  return <CreatePayment currencies={currencies} />;
+  return (
+    <div className="flex justify-center items-center w-full sm:max-w-2xl">
+      <CreatePayment currencies={currencies} />
+    </div>
+  );
 }
 
 export const getStaticProps = async () => {

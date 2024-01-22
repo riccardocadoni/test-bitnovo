@@ -16,7 +16,7 @@ export default function PaymentSummary({ paymentInfo, currency }: IPaymentSummar
     <div className="flex flex-col gap-6 mt-10">
       <Label className="text-xl">Resumen del pedido</Label>
       <Card className="bg-secondary border-0 shadow-none">
-        <CardContent className="flex flex-col p-8 gap-8">
+        <CardContent className="flex flex-col p-8 gap-6">
           <div className="flex justify-between items-center">
             <p className="text-lg font-bold">Importe:</p>
             <p className="text-lg font-bold">{`${paymentInfo.fiat_amount} ${paymentInfo.fiat}`}</p>

@@ -22,7 +22,7 @@ export default function PaymentConfirmationPage({ paymentInfo, currency, error }
   if (paymentStatus === "EX" || paymentStatus === "OC" || paymentStatus === "CA") return <PaymentRejected />;
 
   return (
-    <div className="flex flex-col sm:flex-row w-full gap-6">
+    <div className="flex flex-col sm:flex-row w-full sm:w-3/4 max-w-screen-lg gap-6">
       <div className="sm:w-1/2">
         <PaymentSummary paymentInfo={paymentInfo} currency={currency} />
       </div>
