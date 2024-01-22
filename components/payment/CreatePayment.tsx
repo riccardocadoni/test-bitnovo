@@ -1,6 +1,6 @@
 import { ICurrency } from "@/types/index";
 import CreatePaymentForm from "./CreatePaymentForm";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 
 export interface ICreatePayment {
   currencies: ICurrency[];

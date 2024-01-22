@@ -7,7 +7,7 @@ export interface ICurrency {
   symbol: string;
 }
 
-export interface IOrder {
+export interface IPayment {
   address: string;
   balance_based: string;
   confirmed_amount: number;

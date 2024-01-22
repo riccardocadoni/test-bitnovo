@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-const usePaymentStatus = (orderId: string, initialStatus: string) => {
-  const [paymentStatus, setPaymentStatus] = useState(initialStatus);
+const usePaymentStatus = (paymentId: string, initialPaymentStatus: string) => {
+  const [paymentStatus, setPaymentStatus] = useState(initialPaymentStatus);
 
   /* Create a web socket connection to update payment status if necessary */
   useEffect(() => {
-    let socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT}/${orderId}`);
+    let socket = new WebSocket(`${process.env.NEXT_PUBLIC_WEB_SOCKET_ENDPOINT}/${paymentId}`);
 
     socket.addEventListener("open", () => {
       console.log("WebSocket connection established");
@@ -31,7 +31,7 @@ const usePaymentStatus = (orderId: string, initialStatus: string) => {
         socket.close();
       }
     };
-  }, [orderId]);
+  }, [paymentId]);
 
   return {
     paymentStatus,

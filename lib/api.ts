@@ -1,4 +1,4 @@
-import { ICurrency, IOrder } from "@/types";
+import { ICurrency, IPayment } from "@/types";
 
 export const getCurrencies = async (): Promise<ICurrency[]> => {
   try {
@@ -17,24 +17,24 @@ export const getCurrencies = async (): Promise<ICurrency[]> => {
   }
 };
 
-export const getOrderInfo = async (orderId: string): Promise<IOrder> => {
+export const getPaymentInfo = async (paymentId: string): Promise<IPayment> => {
   try {
-    const res = await fetch(`${process.env.API_BASE_URL}/orders/info/${orderId}`, {
+    const res = await fetch(`${process.env.API_BASE_URL}/orders/info/${paymentId}`, {
       headers: {
         "X-Device-Id": process.env.X_DEVICE_ID!,
       },
     });
     if (!res.ok) {
-      throw new Error(`Failed to fetch order info - status: ${res.status}`);
+      throw new Error(`Failed to fetch payment info - status: ${res.status}`);
     }
-    const orderInfo = await res.json();
-    return orderInfo[0];
+    const paymentInfo = await res.json();
+    return paymentInfo[0];
   } catch (error) {
     throw error;
   }
 };
 
-export const createOrder = async ({
+export const createPayment = async ({
   expectedOutputAmount,
   inputCurrency,
   notes,
@@ -57,7 +57,7 @@ export const createOrder = async ({
     });
 
     if (!response.ok) {
-      throw new Error(`Failed to create order - status: ${response.status}`);
+      throw new Error(`Failed to create payment - status: ${response.status}`);
     }
 
     const data = await response.json();

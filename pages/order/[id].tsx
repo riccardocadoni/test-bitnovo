@@ -1,21 +1,21 @@
 import ErrorVisualizer from "@/components/ErrorVisualizer";
-import MakePayment from "@/components/MakePayment";
-import OrderSummary from "@/components/OrderSummary";
-import PaymentRejected from "@/components/PaymentRejected";
-import PaymentSucceded from "@/components/PaymentSucceded";
+import PaymentInformation from "@/components/payment/PaymentInformation";
+import PaymentSummary from "@/components/payment/PaymentSummary";
+import PaymentRejected from "@/components/payment/results/PaymentRejected";
+import PaymentSucceded from "@/components/payment/results/PaymentSucceded";
 import usePaymentStatus from "@/hooks/usePaymentStatus";
-import { getCurrencies, getOrderInfo } from "@/lib/api";
-import { ICurrency, IOrder } from "@/types";
+import { getCurrencies, getPaymentInfo } from "@/lib/api";
+import { ICurrency, IPayment } from "@/types";
 import { GetServerSidePropsContext } from "next";
 
-export interface IOrderPage {
-  orderInfo: IOrder;
+export interface IPaymentConfirmationPage {
+  paymentInfo: IPayment;
   currency: ICurrency;
   error?: string;
 }
 
-export default function OrderPage({ orderInfo, currency, error }: IOrderPage) {
-  const { paymentStatus } = usePaymentStatus(orderInfo.identifier, orderInfo.status);
+export default function PaymentConfirmationPage({ paymentInfo, currency, error }: IPaymentConfirmationPage) {
+  const { paymentStatus } = usePaymentStatus(paymentInfo.identifier, paymentInfo.status);
 
   if (error) return <ErrorVisualizer errorMessage={error} />;
   if (paymentStatus === "CO" || paymentStatus === "AC") return <PaymentSucceded />;
@@ -24,10 +24,10 @@ export default function OrderPage({ orderInfo, currency, error }: IOrderPage) {
   return (
     <div className="flex flex-col sm:flex-row w-full gap-6">
       <div className="sm:w-1/2">
-        <OrderSummary orderInfo={orderInfo} currency={currency} />
+        <PaymentSummary paymentInfo={paymentInfo} currency={currency} />
       </div>
       <div className="sm:w-1/2">
-        <MakePayment orderInfo={orderInfo} />
+        <PaymentInformation paymentInfo={paymentInfo} />
       </div>
     </div>
   );
@@ -35,19 +35,19 @@ export default function OrderPage({ orderInfo, currency, error }: IOrderPage) {
 
 export const getServerSideProps = async (context: GetServerSidePropsContext) => {
   try {
-    const orderId = context.query.id;
+    const paymentId = context.query.id;
 
-    if (!orderId || typeof orderId != "string") throw new Error(`Invalid or missing order identifier`);
+    if (!paymentId || typeof paymentId != "string") throw new Error(`Invalid or missing payment identifier`);
 
     // The currencies api call can be cached to get a faster page load, using redis for example
     const currencies = await getCurrencies();
-    const orderInfo = await getOrderInfo(orderId);
-    // Get currency of this order
-    const currency = currencies.find((currency) => currency.symbol === orderInfo.currency_id);
+    const paymentInfo = await getPaymentInfo(paymentId);
+    // Get currency of this payment
+    const currency = currencies.find((currency) => currency.symbol === paymentInfo.currency_id);
 
-    return { props: { orderInfo, currency } };
+    return { props: { paymentInfo, currency } };
   } catch (error) {
     console.error("Error: ", error);
-    return { props: { error: "Failed to load order." } };
+    return { props: { error: "Failed to load payment." } };
   }
 };

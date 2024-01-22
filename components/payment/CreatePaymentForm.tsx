@@ -9,11 +9,11 @@ import { ChevronDown } from "lucide-react";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ICurrency } from "@/types";
-import CurrencyVisualizer from "./CurrencyVisualizer";
+import CurrencyVisualizer from "../CurrencyVisualizer";
 import { cn } from "@/lib/utils";
-import { createOrder } from "@/lib/api";
+import { createPayment } from "@/lib/api";
 import { useState } from "react";
-import Spinner from "./loading/Spinner";
+import Spinner from "../loading/Spinner";
 import { useRouter } from "next/router";
 
 export interface ICreatePaymentForm {
@@ -80,13 +80,13 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
         inputCurrency: values.currency,
         notes: values.paymentDescription,
       };
-      const response = await createOrder(payload);
-      // Redirect to the order page
+      const response = await createPayment(payload);
+      // Redirect to the payment page
       console.log(response);
-      router.push(`/order/${response.identifier}`);
+      router.push(`/payment/${response.identifier}`);
     } catch (error) {
-      console.error("Error creating order:", error);
-      setError("An error occurred while creating order.");
+      console.error("Error creating payment:", error);
+      setError("An error occurred while creating payment.");
     } finally {
       setIsLoading(false);
     }

@@ -1,14 +1,14 @@
-import CreatePayment from "@/components/CreatePayment";
+import CreatePayment from "@/components/payment/CreatePayment";
 import ErrorVisualizer from "@/components/ErrorVisualizer";
 import { getCurrencies } from "@/lib/api";
 import { ICurrency } from "@/types/index";
 
-export interface IHome {
+export interface ICreatePaymentPage {
   currencies: ICurrency[];
   error?: string;
 }
 
-export default function Home({ currencies, error }: IHome) {
+export default function CreatePaymentPage({ currencies, error }: ICreatePaymentPage) {
   if (error) return <ErrorVisualizer errorMessage={error} />;
   return <CreatePayment currencies={currencies} />;
 }

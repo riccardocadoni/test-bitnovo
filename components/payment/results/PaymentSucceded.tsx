@@ -1,9 +1,9 @@
-import { Card, CardContent, CardFooter } from "./ui/card";
-import { Button } from "./ui/button";
-import Succeded from "./icons/Succeded";
+import { Card, CardContent, CardFooter } from "../../ui/card";
+import { Button } from "../../ui/button";
+import Succeded from "../../icons/Succeded";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Spinner from "./loading/Spinner";
+import Spinner from "../../loading/Spinner";
 
 export interface IPaymentSucceded {}
 
