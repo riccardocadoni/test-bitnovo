@@ -15,6 +15,8 @@ import { createPayment } from "@/lib/api";
 import { useState } from "react";
 import Spinner from "../loading/Spinner";
 import { useRouter } from "next/router";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
+import Info from "../icons/Info";
 
 export interface ICreatePaymentForm {
   currencies: ICurrency[];
@@ -113,7 +115,22 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
           name="currency"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Seleccionar moneda</FormLabel>
+              <div className="flex items-center gap-1">
+                <FormLabel>Seleccionar moneda</FormLabel>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div>
+                        <Info className="h-3.5 w-3.5" />
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Selecciona una moneda</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+
               <FormControl>
                 <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
