@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,6 +9,7 @@ import Warning2 from "../icons/Warning2";
 import { IPayment } from "@/types";
 import { Button } from "../ui/button";
 import QRCodeVisualizer from "../QRCodeVisualizer";
+import Web3Payment from "../Web3Payment";
 //disabled SSR for this component to avoid error: Text content does not match server-rendered HTML
 const TimerVisulizer = dynamic(() => import("../TimerVisulizer"), { ssr: false });
 
@@ -64,11 +66,16 @@ export default function PaymentInformation({ paymentInfo }: IPaymentInformation)
               </div>
             </TabsContent>
             <TabsContent value="Web3">
-              <Card>
-                <CardContent className="flex text-center justify-center items-center p-4 w-40 h-40">
-                  <p>Connect wallet</p>
+              <Card className="flex justify-center items-center">
+                <CardContent className="flex flex-col justify-center items-center text-center p-4 gap-4 w-50 h-40">
+                  <Image src="/metamask-logo.png" alt="Metamask logo" height={43} width={137} />
+                  {paymentInfo.currency_id === "ETH_TEST3" ? (
+                    <Web3Payment address={paymentInfo.address} amount={paymentInfo.crypto_amount} />
+                  ) : (
+                    <p className="text-base">Solo disponible para Ethereum</p>
+                  )}
                 </CardContent>
-              </Card>{" "}
+              </Card>
             </TabsContent>
           </Tabs>
         </CardContent>
