@@ -29,17 +29,14 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
 
   const formSchema = z
     .object({
-      amountPayable: z.coerce.number().min(0, "Amount must be a positive number"),
+      amountPayable: z.string(),
       currency: z.string({
-        required_error: "Please select a currency.",
+        required_error: "Por favor, seleccione una moneda.",
       }),
       paymentDescription: z
         .string()
-        .min(2, {
-          message: "Description must be at least 2 characters.",
-        })
         .max(30, {
-          message: "Description must not be longer than 30 characters.",
+          message: "El concepto no debe tener más de 30 caracteres.",
         })
         .optional(),
     })
@@ -49,20 +46,26 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
         if (selectedCurrency) {
           const minAmount = Number(selectedCurrency.min_amount);
           const maxAmount = Number(selectedCurrency.max_amount);
-          return data.amountPayable >= minAmount && data.amountPayable <= maxAmount;
+          const amount = Number(data.amountPayable);
+          return amount >= minAmount && amount <= maxAmount;
         }
         return false;
       },
-      {
-        message: "Amount must be within the range of the selected currency",
-        path: ["amountPayable"],
+      (data) => {
+        const selectedCurrency = currencies.find((currency) => currency.symbol === data.currency);
+        return {
+          message: selectedCurrency
+            ? `El importe debe estar entre ${selectedCurrency.min_amount} y ${selectedCurrency.max_amount}`
+            : "Invalid currency selection",
+          path: ["amountPayable"],
+        };
       }
     );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amountPayable: 0,
+      amountPayable: "",
       currency: currencies[0]?.symbol,
       paymentDescription: "",
     },
@@ -73,7 +76,7 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
       setIsLoading(true);
       setError(null);
       const payload = {
-        expectedOutputAmount: values.amountPayable,
+        expectedOutputAmount: Number(values.amountPayable),
         inputCurrency: values.currency,
         notes: values.paymentDescription,
       };
@@ -169,7 +172,7 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
           )}
         />
         {error && <p className="text-destructive">{error}</p>}
-        <Button type="submit" className="w-full" disabled={isLoading}>
+        <Button type="submit" className="w-full" disabled={isLoading || !form.formState.isDirty}>
           {isLoading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
           Continuar
         </Button>
