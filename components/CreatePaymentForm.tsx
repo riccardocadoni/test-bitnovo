@@ -23,6 +23,8 @@ export interface ICreatePaymentForm {
 export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
   const router = useRouter();
 
   const formSchema = z
@@ -62,6 +64,7 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
     defaultValues: {
       amountPayable: 0,
       currency: currencies[0]?.symbol,
+      paymentDescription: "",
     },
   });
 
@@ -76,6 +79,7 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
       };
       const response = await createOrder(payload);
       // Redirect to the order page
+      console.log(response);
       router.push(`/order/${response.identifier}`);
     } catch (error) {
       console.error("Error creating order:", error);
@@ -108,7 +112,7 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
             <FormItem className="flex flex-col">
               <FormLabel>Seleccionar moneda</FormLabel>
               <FormControl>
-                <Popover>
+                <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -132,6 +136,7 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
                             key={currency.symbol}
                             onSelect={() => {
                               form.setValue("currency", currency.symbol);
+                              setIsPopoverOpen(false);
                             }}
                           >
                             <CurrencyVisualizer
