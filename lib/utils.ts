@@ -5,13 +5,6 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export async function handleCopyClick(text: string) {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch (error) {
-    console.error("Failed to copy text: ", error);
-  }
-}
 /**
  * Generates a URI string for creating a QR code for different types of test cryptocurrencies.
  *
