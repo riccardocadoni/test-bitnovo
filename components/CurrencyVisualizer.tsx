@@ -1,7 +1,7 @@
 import { ICurrency } from "@/types/index";
 import Image from "next/image";
 import TickCircle from "./icons/TickCircle";
-import { ChevronDown } from "lucide-react";
+import Arrow from "./icons/Arrow";
 
 export default function CurrencyVisualizer({
   currency,
@@ -20,15 +20,11 @@ export default function CurrencyVisualizer({
         <div className="flex gap-2 items-center">
           <Image src={image} alt="Currency logo" height={32} width={32} />
           <div>
-            <p className="text-[14px] font-bold">{name}</p>
-            <p className="text-[12px]">{symbol}</p>
+            <p className="text-sm font-bold">{name}</p>
+            <p className="text-xs text-muted-foreground">{symbol}</p>
           </div>
         </div>
-        {isSelected ? (
-          <TickCircle className="h-4 w-4" />
-        ) : (
-          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50 -rotate-90" />
-        )}
+        {isSelected ? <TickCircle className="h-4 w-4" /> : <Arrow className="ml-2 h-4 w-4 shrink-0 -rotate-90" />}
       </div>
     );
   return (

@@ -5,7 +5,6 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ChevronDown } from "lucide-react";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { ICurrency } from "@/types";
@@ -17,6 +16,7 @@ import Spinner from "../loading/Spinner";
 import { useRouter } from "next/router";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import Info from "../icons/Info";
+import Arrow from "../icons/Arrow";
 
 export interface ICreatePaymentForm {
   currencies: ICurrency[];
@@ -138,14 +138,14 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
                       <Button
                         variant="outline"
                         role="combobox"
-                        className={cn("justify-between border-border py-4", !field.value && "text-muted-foreground")}
+                        className={cn("justify-between py-[18px]", !field.value && "text-muted-foreground")}
                       >
                         <CurrencyVisualizer currency={currencies.find((currency) => currency.symbol === field.value)} />
-                        <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                        <Arrow className="ml-2 h-4 w-4 shrink-0" />
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="popover-content-width-same-as-its-trigger p-0">
+                  <PopoverContent className="popover-content-width-same-as-its-trigger p-3 pb-1 sm:pb-3">
                     <Command>
                       <CommandInput placeholder="Buscar" />
                       <CommandEmpty>No currency found.</CommandEmpty>

@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="flex gap-4 items-center h-6">
       <Logo />
       <Separator orientation="vertical" />
-      <p className="text-border text-xs font-bold">© 2022 Bitnovo. All rights reserved.</p>
+      <p className="text-dark-5 text-xs font-bold">© 2022 Bitnovo. All rights reserved.</p>
     </footer>
   );
 }

@@ -14,7 +14,7 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        selected: "hsl(var(--selected))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -22,6 +22,7 @@ const config = {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light:"hsl(var(--primary-light))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -47,6 +48,14 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
           border: "hsl(var(--card-border))",
+        },
+        light: {
+          3: "hsl(var(--light-3))",
+          4: "hsl(var(--light-4))",
+        },
+        dark: {
+          4: "hsl(var(--dark-4))",
+          5: "hsl(var(--dark-5))",
         },
       },
       borderRadius: {
