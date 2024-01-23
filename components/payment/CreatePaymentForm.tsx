@@ -84,7 +84,6 @@ export default function CreatePaymentForm({ currencies }: ICreatePaymentForm) {
       };
       const response = await createPayment(payload);
       // Redirect to the payment page
-      console.log(response);
       router.push(`/payment/${response.identifier}`);
     } catch (error) {
       console.error("Error creating payment:", error);
