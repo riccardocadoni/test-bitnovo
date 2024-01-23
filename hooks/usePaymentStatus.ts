@@ -12,9 +12,7 @@ const usePaymentStatus = (paymentId: string, initialPaymentStatus: string) => {
     });
 
     socket.addEventListener("message", (event) => {
-      console.log("Message from server", event.data);
       const { status } = JSON.parse(event.data);
-      console.log("status: ", status);
       setPaymentStatus(status);
     });
 
@@ -23,7 +21,7 @@ const usePaymentStatus = (paymentId: string, initialPaymentStatus: string) => {
     });
 
     socket.addEventListener("close", (event) => {
-      console.log("WebSocket connection closed:", event);
+      console.log("WebSocket connection closed:");
     });
 
     return () => {
