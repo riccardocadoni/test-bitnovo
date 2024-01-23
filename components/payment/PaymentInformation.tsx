@@ -67,7 +67,7 @@ export default function PaymentInformation({ paymentInfo }: IPaymentInformation)
             </TabsContent>
             <TabsContent value="Web3">
               <Card className="flex justify-center items-center">
-                <CardContent className="flex flex-col justify-center items-center text-center p-4 gap-4 w-50 h-40">
+                <CardContent className="flex flex-col justify-center items-center text-center p-4 gap-4 w-40 h-40">
                   <Image src="/metamask-logo.png" alt="Metamask logo" height={43} width={137} />
                   {paymentInfo.currency_id === "ETH_TEST3" ? (
                     <Web3Payment address={paymentInfo.address} amount={paymentInfo.crypto_amount} />

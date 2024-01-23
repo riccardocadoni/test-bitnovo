@@ -20,12 +20,12 @@ const Web3Payment = ({ address, amount }: IWeb3Payment) => {
       {!account ? (
         <Button size="sm" onClick={connectWallet} disabled={isLoading}>
           {isLoading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Conéctese a MetaMask
+          Conectar
         </Button>
       ) : (
         <Button size="sm" onClick={sendPayment} disabled={isLoading}>
           {isLoading && <Spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Pagar con MetaMask
+          Pagar
         </Button>
       )}
     </div>
